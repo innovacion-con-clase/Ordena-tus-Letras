@@ -467,13 +467,57 @@
                                 "Señor, hoy te entregamos nuestras letras, nuestro 'A, B, C', confiando en que Tú allá en el cielo armas las oraciones y cumples Tu propósito. Amén."
                             </p>
                         </div>
-
-                        <button onclick="finishDevotional()" 
-                            class="w-full py-4 bg-emerald-600 text-white font-bold rounded-2xl hover:bg-emerald-700 transition-colors shadow-lg flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transform">
-                            <i data-lucide="check-circle" class="w-5 h-5"></i> ¡He terminado mi devocional!
-                        </button>
+                        
+                        <div class="text-center text-gray-500 text-sm italic mt-4">
+                            Continúa para la actividad final...
+                        </div>
                     </div>
                 `
+            },
+            {
+                title: "Para no olvidar",
+                subtitle: "Sopa de Letras",
+                renderContent: () => `
+                    <div class="space-y-4 animate-fade-in select-none">
+                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 mb-4">
+                            <p class="text-indigo-800 text-sm text-center font-medium">
+                                Para que estas verdades queden en tu mente, encuentra las palabras clave de hoy.<br>
+                            </p>
+                        </div>
+
+                        <!-- Grid Container -->
+                        <div id="ws-grid" class="grid gap-1 mx-auto max-w-[350px] touch-none" style="grid-template-columns: repeat(9, 1fr);" ontouchmove="handleTouchMove(event)">
+                            <!-- JS Injected -->
+                        </div>
+
+                        <!-- Word List -->
+                        <div id="ws-words" class="flex flex-wrap justify-center gap-2 mt-6">
+                            <!-- JS Injected -->
+                        </div>
+
+                        <!-- Success Message & Finish -->
+                        <div id="ws-message" class="hidden mt-6 space-y-4 animate-fade-in">
+                            <div class="bg-emerald-100 text-emerald-800 p-4 rounded-xl text-center font-bold flex items-center justify-center gap-2">
+                                <i data-lucide="trophy" class="w-5 h-5"></i> ¡Excelente!
+                            </div>
+                            <button onclick="finishDevotional()" 
+                                class="w-full py-4 bg-emerald-600 text-white font-bold rounded-2xl hover:bg-emerald-700 transition-colors shadow-lg flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transform animate-pulse-custom">
+                                <i data-lucide="check-circle" class="w-5 h-5"></i> Finalizar Devocional
+                            </button>
+                        </div>
+                    </div>
+                `,
+                mount: () => {
+                    initWordSearch();
+                    renderWordSearchGrid();
+                    // Add global listener for mouse up to end selection anywhere
+                    document.addEventListener('mouseup', handleGlobalEnd);
+                    document.addEventListener('touchend', handleGlobalEnd);
+                },
+                unmount: () => {
+                    document.removeEventListener('mouseup', handleGlobalEnd);
+                    document.removeEventListener('touchend', handleGlobalEnd);
+                }
             }
         ];
 
@@ -590,6 +634,11 @@
                     </main>
                     ${footerHtml}
                 `;
+
+                // Executes mount if available for the step
+                if (step.mount) {
+                    setTimeout(() => step.mount(), 50);
+                }
             }
 
             // Initialize Icons
@@ -600,6 +649,12 @@
         }
 
         function changeStep(direction) {
+
+            // Unmount previous step
+            const currentStepObj = steps[currentStep];
+            if (currentStepObj.unmount) {
+                currentStepObj.unmount();
+            }
 
             // Try enabling audio on first interaction
             if (!audioPlaying) {
@@ -617,6 +672,287 @@
         function handleQuiz(optionId) {
             quizAnswer = optionId;
             render(); // Re-render to show feedback/styles
+        }
+
+        // --- WORD SEARCH GAME LOGIC ---
+        const WORD_SEARCH_DATA = {
+            gridSize: 9,
+            words: ["CORAZON", "GLORIA", "AMNESIA", "LETRAS", "FE", "DIOS", "ORACION", "ALMA"],
+            grid: [],
+            foundWords: [],
+            foundCells: new Set(), // Set of "r,c" strings
+            selectionStart: null,
+            selectionEnd: null,
+            isSelecting: false
+        };
+
+        function initWordSearch() {
+            // Generate Grid
+            const size = WORD_SEARCH_DATA.gridSize;
+            const grid = Array(size).fill(null).map(() => Array(size).fill(''));
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+            // Place words
+            WORD_SEARCH_DATA.words.forEach(word => {
+                let placed = false;
+                let attempts = 0;
+                while (!placed && attempts < 100) {
+                    const direction = Math.random() > 0.5 ? 'H' : 'V'; // H or V
+                    const row = Math.floor(Math.random() * size);
+                    const col = Math.floor(Math.random() * size);
+
+                    if (canPlaceWord(grid, word, row, col, direction)) {
+                        placeWord(grid, word, row, col, direction);
+                        placed = true;
+                    }
+                    attempts++;
+                }
+            });
+
+            // Fill empty
+            for (let i = 0; i < size; i++) {
+                for (let j = 0; j < size; j++) {
+                    if (grid[i][j] === '') {
+                        grid[i][j] = letters.charAt(Math.floor(Math.random() * letters.length));
+                    }
+                }
+            }
+            WORD_SEARCH_DATA.grid = grid;
+            WORD_SEARCH_DATA.foundWords = [];
+            WORD_SEARCH_DATA.foundCells = new Set();
+        }
+
+        function canPlaceWord(grid, word, row, col, direction) {
+            if (direction === 'H') {
+                if (col + word.length > grid.length) return false;
+                for (let i = 0; i < word.length; i++) {
+                    if (grid[row][col + i] !== '' && grid[row][col + i] !== word[i]) return false;
+                }
+            } else {
+                if (row + word.length > grid.length) return false;
+                for (let i = 0; i < word.length; i++) {
+                    if (grid[row + i][col] !== '' && grid[row + i][col] !== word[i]) return false;
+                }
+            }
+            return true;
+        }
+
+        function placeWord(grid, word, row, col, direction) {
+            for (let i = 0; i < word.length; i++) {
+                if (direction === 'H') grid[row][col + i] = word[i];
+                else grid[row + i][col] = word[i];
+            }
+        }
+
+        function renderWordSearchGrid() {
+            const container = document.getElementById('ws-grid');
+            if (!container) return;
+
+            container.innerHTML = '';
+            container.style.gridTemplateColumns = `repeat(${WORD_SEARCH_DATA.gridSize}, 1fr)`;
+
+            WORD_SEARCH_DATA.grid.forEach((row, rIndex) => {
+                row.forEach((char, cIndex) => {
+                    const cell = document.createElement('div');
+                    cell.innerText = char;
+                    cell.className = `aspect-square flex items-center justify-center font-bold text-sm md:text-lg select-none cursor-pointer rounded-md transition-colors ${getCellClass(rIndex, cIndex)}`;
+                    cell.dataset.row = rIndex;
+                    cell.dataset.col = cIndex;
+
+                    // Events
+                    cell.onmousedown = (e) => startSelection(rIndex, cIndex, e);
+                    cell.onmouseover = () => updateSelection(rIndex, cIndex);
+                    cell.onmouseup = (e) => endSelection(e);
+                    cell.ontouchstart = (e) => { e.preventDefault(); startSelection(rIndex, cIndex); }; // Prevent scroll
+
+                    container.appendChild(cell);
+                });
+            });
+
+            // Update Word List
+            const listContainer = document.getElementById('ws-words');
+            if (listContainer) {
+                listContainer.innerHTML = WORD_SEARCH_DATA.words.map(w =>
+                    `<span class="px-2 py-1 rounded ${WORD_SEARCH_DATA.foundWords.includes(w) ? 'line-through text-gray-400 bg-gray-100' : 'text-indigo-900 bg-indigo-50 font-semibold'} text-xs md:text-sm transition-all">${w}</span>`
+                ).join('');
+            }
+
+            // Check win
+            if (WORD_SEARCH_DATA.foundWords.length === WORD_SEARCH_DATA.words.length) {
+                document.getElementById('ws-message').classList.remove('hidden');
+                triggerConfetti();
+            }
+        }
+
+        function getCellClass(r, c) {
+            if (WORD_SEARCH_DATA.foundCells.has(`${r},${c}`)) {
+                return 'found-cell bg-emerald-200 text-emerald-900 border-emerald-300';
+            }
+            return 'bg-white border border-slate-100 text-slate-700 hover:bg-slate-50';
+        }
+
+        // Interaction Logic
+        function startSelection(r, c, e) {
+            WORD_SEARCH_DATA.isSelecting = true;
+            WORD_SEARCH_DATA.selectionStart = { r, c };
+            WORD_SEARCH_DATA.selectionEnd = { r, c };
+            highlightGrid();
+        }
+
+        function updateSelection(r, c) {
+            if (!WORD_SEARCH_DATA.isSelecting) return;
+            WORD_SEARCH_DATA.selectionEnd = { r, c };
+            highlightGrid();
+        }
+
+        function endSelection(e) {
+            if (!WORD_SEARCH_DATA.isSelecting) return;
+
+            // Try to update selection one last time if it's a touch event
+            if (e && e.changedTouches && e.changedTouches.length > 0) {
+                const touch = e.changedTouches[0];
+                const el = document.elementFromPoint(touch.clientX, touch.clientY);
+                if (el) {
+                    const cell = el.closest('[data-row]');
+                    if (cell) {
+                        updateSelection(parseInt(cell.dataset.row), parseInt(cell.dataset.col));
+                    }
+                }
+            }
+
+            WORD_SEARCH_DATA.isSelecting = false;
+            checkWord();
+            WORD_SEARCH_DATA.selectionStart = null;
+            WORD_SEARCH_DATA.selectionEnd = null;
+            highlightGrid();
+        }
+
+        // Global touch move handler for the grid
+        function handleTouchMove(e) {
+            if (!WORD_SEARCH_DATA.isSelecting) return;
+            e.preventDefault();
+            const touch = e.touches[0];
+            const el = document.elementFromPoint(touch.clientX, touch.clientY);
+            if (el) {
+                const cell = el.closest('[data-row]');
+                if (cell) {
+                    updateSelection(parseInt(cell.dataset.row), parseInt(cell.dataset.col));
+                }
+            }
+        }
+
+        function highlightGrid() {
+            // Clear temporary highlights (but keep found ones)
+            const cells = document.querySelectorAll('#ws-grid > div');
+            cells.forEach(cell => {
+                const r = parseInt(cell.dataset.row);
+                const c = parseInt(cell.dataset.col);
+
+                // Reset to base state from visual update
+                // Note: The classes are re-applied based on standard logic, we just modify ON TOP of that potential base
+                // But simplified: reset to what getCellClass returns + highlight if needed
+
+                const baseClass = `aspect-square flex items-center justify-center font-bold text-sm md:text-lg select-none cursor-pointer rounded-md transition-colors ${getCellClass(r, c)}`;
+                cell.className = baseClass;
+
+                if (WORD_SEARCH_DATA.isSelecting && WORD_SEARCH_DATA.selectionStart) {
+                    if (isLine(WORD_SEARCH_DATA.selectionStart, WORD_SEARCH_DATA.selectionEnd, r, c)) {
+                        cell.classList.remove('bg-white', 'text-slate-700', 'bg-emerald-200', 'text-emerald-900');
+                        cell.classList.add('bg-indigo-300', 'text-indigo-900', 'scale-105');
+                    }
+                }
+            });
+        }
+
+        function isLine(start, end, r, c) {
+            // Check if (r,c) is on the line between start and end
+            // Support Horizontal, Vertical, Diagonal
+            const dr = end.r - start.r;
+            const dc = end.c - start.c;
+
+            // Check if valid direction
+            if (dr === 0 && dc === 0) return r === start.r && c === start.c;
+
+            // Normalize direction
+            const stepR = dr === 0 ? 0 : dr / Math.abs(dr);
+            const stepC = dc === 0 ? 0 : dc / Math.abs(dc);
+
+            // Diagonal check: must be 45 degrees
+            if (stepR !== 0 && stepC !== 0 && Math.abs(dr) !== Math.abs(dc)) return false;
+
+            // Check if point is on the segment
+            // (r - start.r) should be multiple of stepR
+            const distR = r - start.r;
+            const distC = c - start.c;
+
+            if (stepR !== 0 && (distR % stepR !== 0)) return false;
+            if (stepC !== 0 && (distC % stepC !== 0)) return false;
+
+            // Check bounds
+            // Is it between start and end?
+            // Simple approach: Iterate from start to end and match
+            let currR = start.r;
+            let currC = start.c;
+            // Limit loop to avoid crash
+            for (let i = 0; i < 20; i++) {
+                if (currR === r && currC === c) return true;
+                if (currR === end.r && currC === end.c) break;
+                currR += stepR;
+                currC += stepC;
+            }
+            return false;
+        }
+
+        function checkWord() {
+            const start = WORD_SEARCH_DATA.selectionStart;
+            const end = WORD_SEARCH_DATA.selectionEnd;
+            if (!start || !end) return;
+
+            // Extract word
+            const dr = end.r - start.r;
+            const dc = end.c - start.c;
+
+            // Normalize direction
+            const stepR = dr === 0 ? 0 : dr / Math.abs(dr);
+            const stepC = dc === 0 ? 0 : dc / Math.abs(dc);
+
+            // Diagonal check
+            if (stepR !== 0 && stepC !== 0 && Math.abs(dr) !== Math.abs(dc)) return;
+
+            let word = "";
+            let path = [];
+            let currR = start.r;
+            let currC = start.c;
+
+            for (let i = 0; i < 20; i++) {
+                word += WORD_SEARCH_DATA.grid[currR][currC];
+                path.push({ r: currR, c: currC });
+                if (currR === end.r && currC === end.c) break;
+                currR += stepR;
+                currC += stepC;
+            }
+
+            // Check normal and reverse
+            const reverseWord = word.split('').reverse().join('');
+
+            const found = WORD_SEARCH_DATA.words.includes(word) ? word : (WORD_SEARCH_DATA.words.includes(reverseWord) ? reverseWord : null);
+
+            if (found && !WORD_SEARCH_DATA.foundWords.includes(found)) {
+                WORD_SEARCH_DATA.foundWords.push(found);
+
+                // Add to found cells
+                path.forEach(p => {
+                    WORD_SEARCH_DATA.foundCells.add(`${p.r},${p.c}`);
+                });
+
+                renderWordSearchGrid(); // Re-render to show persistent styles
+            }
+        }
+
+
+        // Global handler for cleanup
+        function handleGlobalEnd(e) {
+            endSelection(e);
         }
 
         function finishDevotional() {

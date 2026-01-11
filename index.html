@@ -240,6 +240,9 @@
                                     Cuando el Cielo <br />
                                     <span class="text-indigo-400">Ordena tus Letras</span>
                                 </h1>
+                                <p class="text-white/90 text-sm font-medium mt-2 tracking-wide uppercase opacity-80">
+                                    Tu intención, Su traducción
+                                </p>
                             </div>
                         </div>
                         
@@ -264,21 +267,22 @@
                 renderContent: () => `
                     <div class="space-y-4 animate-fade-in">
                         <div class="relative w-full rounded-2xl overflow-hidden shadow-md bg-slate-100 mb-6 border border-gray-100">
-                            <video src="https://i.imgur.com/bW3e1SV.mp4" autoplay loop muted playsinline class="w-full h-auto object-cover max-h-[300px]"></video>
+                            <video src="https://i.imgur.com/bW3e1SV.mp4" autoplay loop muted playsinline class="w-full h-auto object-cover max-h-[250px]"></video>
                             <div class="absolute bottom-2 right-2 bg-black/30 backdrop-blur-sm px-2 py-1 rounded text-[10px] text-white/80">
-                                Reflexión visual
+                                Reflexión
                             </div>
                         </div>
 
                         <p class="text-gray-700 leading-relaxed">
-                            Hola a todos. ¿Saben? Estaba pensando en lo frágiles que somos con nuestra memoria. A veces le pedimos milagros a Dios, pero apenas lo tenemos, nos da una especie de <strong>"amnesia espiritual"</strong>.
+                            A veces sufrimos de una <strong>"amnesia espiritual"</strong>. Pedimos milagros, pero apenas los recibimos, olvidamos quién nos los dio y quiénes somos en Él.
                         </p>
-                        <div class="bg-blue-50 p-4 rounded-xl border-l-4 border-blue-500 italic text-blue-900">
-                            "Olvidamos rápido. Pero hoy quiero contarles algo que me pasó y que me niego a olvidar."
-                        </div>
                         <p class="text-gray-700">
-                            ¿Se acuerdan de la pasada Navidad? Compramos ropa, zapatos y ¡un balón de fútbol! Uno da el regalo y piensa: "Misión cumplida".
+                            Pero hay algo que me niego a olvidar. ¿Recuerdan la Navidad pasada? Regalamos zapatos y un balón al hijo de nuestro compañero. Pensamos: "Misión cumplida".
                         </p>
+                        <p class="text-gray-700 mb-2">
+                            Sin embargo, él respondió con una carta que me desarmó:
+                        </p>
+                        
                         <div class="bg-amber-50 p-6 rounded-2xl shadow-sm border border-amber-100 relative group">
                             <button onclick="shareVerse('Sobre toda cosa guardada, guarda tu corazón; porque de él mana la vida.', 'Proverbios 4:23')" class="absolute top-4 right-4 p-2 bg-white hover:bg-white rounded-full text-amber-900 transition-all shadow-sm z-10" title="Compartir Perla">
                                 <i data-lucide="share-2" class="w-4 h-4"></i>
@@ -290,16 +294,19 @@
                                 "Sobre toda cosa guardada, guarda tu corazón; porque de él mana la vida."
                             </p>
                         </div>
+                        <p class="text-sm text-gray-500 italic mt-2 text-center">
+                            Él entendió que el verdadero regalo no estaba en la caja, sino en la intención.
+                        </p>
                     </div>
                 `
             },
             {
-                title: "Punto 1",
-                subtitle: "La intención detrás de la acción",
+                title: "El Principio",
+                subtitle: "Todo para Su Gloria",
                 renderContent: () => `
                     <div class="space-y-4 animate-fade-in">
                         <p class="text-gray-700">
-                            ¿Por qué hacemos lo que hacemos? A veces nos complicamos pensando si "hicimos suficiente". Pero miren lo que dice el apóstol Pablo:
+                            ¿Por qué hacemos lo que hacemos? A veces nos complicamos pensando si nuestra ofrenda es perfecta. Pero Pablo nos da la clave:
                         </p>
                         <div class="bg-indigo-600 p-6 rounded-2xl text-white shadow-lg relative group">
                              <button onclick="shareVerse('Si, pues, coméis o bebéis, o hacéis otra cosa, hacedlo todo para la gloria de Dios.', '1 Corintios 10:31')" class="absolute top-4 right-4 p-2 bg-white/20 hover:bg-white/40 rounded-full text-white transition-all shadow-sm z-10" title="Compartir Perla">
@@ -312,75 +319,55 @@
                                 "Si, pues, coméis o bebéis, o hacéis otra cosa, hacedlo todo para la gloria de Dios."
                             </p>
                         </div>
-                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                            <h5 class="font-bold text-gray-800 mb-2">Pregunta para la familia:</h5>
-                            <p class="text-gray-600 italic">¿En qué áreas de tu rutina diaria te cuesta más recordar que lo haces para la gloria de Dios?</p>
+                        
+                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 mt-4">
+                            <h5 class="font-bold text-indigo-800 mb-2 flex items-center gap-2">
+                                <i data-lucide="message-circle" class="w-4 h-4"></i> Pregunta para la familia:
+                            </h5>
+                            <p class="text-indigo-900 italic text-sm">
+                                "¿En qué pequeña cosa de mañana lunes podrías aplicar esto de 'hacerlo para Dios'?"
+                            </p>
                         </div>
-                        <p class="text-gray-700 font-semibold text-center mt-4">
-                            ¿Tu corazón estaba alineado con el Cielo al darlo?
-                        </p>
                     </div>
                 `
             },
             {
-                title: "Ilustración Central",
-                subtitle: "La niña y el alfabeto",
+                title: "El Clímax",
+                subtitle: "El Alfabeto de Dios",
                 renderContent: () => `
                     <div class="space-y-4 animate-fade-in">
-                        <p class="text-gray-700 italic">
-                            "Una niña le dijo a sus padres que iría a orar. Al escuchar tras la puerta, la oyeron repetir el abecedario. Al preguntarle, ella respondió:"
+                        <p class="text-gray-700">
+                            Una niña decidió orar y sus padres la escucharon decir: <em>"A, B, C, D..."</em>. Al preguntarle, ella respondió con sabiduría profunda:
                         </p>
                         <div class="bg-emerald-50 p-6 rounded-2xl border-2 border-dashed border-emerald-200 text-emerald-900 font-medium text-lg text-center relative group">
                              <button onclick="shareVerse('Yo acá digo las letras y allá en el cielo Dios arma las palabras.', 'Anécdota de Fe')" class="absolute top-2 right-2 p-2 bg-white/50 hover:bg-emerald-100 rounded-full text-emerald-900 transition-all shadow-sm z-10" title="Compartir Perla">
                                 <i data-lucide="share-2" class="w-4 h-4"></i>
                             </button>
-                            "¡Ay, papás! Lo que pasa es que yo tengo tanta fe, que sé que yo acá digo las letras y allá en el cielo Dios arma las palabras."
+                            "Yo tengo tanta fe, que sé que yo acá digo las letras y allá en el cielo Dios arma las palabras."
                         </div>
-                        <p class="text-gray-600 text-sm text-center">
-                            Esta representación nos recuerda que Dios toma nuestro caos y lo vuelve un mensaje claro de amor.
-                        </p>
-                    </div>
-                `
-            },
-            {
-                title: "Punto 2",
-                subtitle: "Cuando Dios firma nuestras cartas",
-                renderContent: () => `
-                    <div class="space-y-4 animate-fade-in">
-                        <p class="text-gray-700">
-                            El título de hoy es <em>"Cuando el Cielo ordena tus letras"</em>. Ese niño no solo escribió una carta de agradecimiento; permitió que Dios ordenara sus palabras.
-                        </p>
-                        <p class="text-gray-700">
-                            ¿Qué estamos escribiendo nosotros con nuestras vidas? ¿Son cartas de queja? ¿Son mensajes de ansiedad?
-                        </p>
-                        <div class="bg-white p-6 rounded-2xl border-2 border-purple-100 shadow-sm relative group">
-                             <button onclick="shareVerse('Rebosa mi corazón palabra buena... Mi lengua es pluma de escribiente muy ligero.', 'Salmos 45:1')" class="absolute top-4 right-4 p-2 bg-purple-50 hover:bg-purple-100 rounded-full text-purple-900 transition-all shadow-sm z-10" title="Compartir Perla">
-                                <i data-lucide="share-2" class="w-4 h-4"></i>
-                            </button>
-                            <h4 class="font-bold text-purple-800 mb-2 flex items-center gap-2">
-                                <i data-lucide="pen-tool" class="w-5 h-5"></i> Salmos 45:1
+                        
+                        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm mt-4">
+                             <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2 text-sm uppercase tracking-wide">
+                                <i data-lucide="zap" class="w-4 h-4 text-amber-500"></i> Transformación
                             </h4>
-                            <p class="text-gray-800 leading-relaxed">
-                                "Rebosa mi corazón palabra buena... Mi lengua es pluma de escribiente muy ligero."
+                            <p class="text-gray-600 mb-2">
+                                <strong>Romanos 12:2</strong> nos llama a ser transformados por la renovación de nuestro entendimiento.
                             </p>
-                        </div>
-                        <div class="flex items-center gap-4 bg-purple-50 p-4 rounded-xl">
-                            <div class="text-3xl">✍️</div>
-                            <p class="text-sm text-purple-900 italic">
-                                Nuestra lengua, nuestras acciones, nuestros <strong>mensajes de WhatsApp</strong>... todo puede ser una pluma que Dios usa para escribir esperanza en otros.
+                            <p class="text-indigo-600 font-bold text-center">
+                                Tú pones la intención (las letras), Él pone la transformación (las palabras).
                             </p>
                         </div>
                     </div>
                 `
             },
             {
-                title: "Test de Fe",
-                subtitle: "¿Qué aprendimos hoy?",
+                title: "Repaso",
+                subtitle: "¿Entendimos la lección?",
                 renderContent: () => {
                     const options = [
-                        { id: 'a', text: "Que no sabía orar correctamente.", correct: false },
+                        { id: 'a', text: "Repetir el abecedario es la única forma de orar.", correct: false },
                         { id: 'b', text: "Que Dios conoce nuestra intención y Él ordena nuestra oración.", correct: true },
-                        { id: 'c', text: "Que Dios prefiere el orden alfabético.", correct: false }
+                        { id: 'c', text: "Que debemos hablar con palabras perfectas.", correct: false }
                     ];
 
                     let quizHtml = `
@@ -388,7 +375,7 @@
                         <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
                             <h4 class="font-bold text-slate-800 text-lg mb-4 flex items-center gap-2">
                                 <i data-lucide="help-circle" class="text-indigo-500 w-5 h-5"></i>
-                                ¿Qué buscaba enseñarnos la niña al repetir el abecedario?
+                                ¿Qué nos enseña la historia de la niña?
                             </h4>
                             <div class="space-y-3">
                     `;
@@ -424,8 +411,8 @@
                         const feedbackClass = isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800';
                         const feedbackIcon = isCorrect ? 'award' : 'help-circle';
                         const feedbackText = isCorrect
-                            ? "¡Correcto! Dios no busca elocuencia, sino un corazón que confía en Su soberanía."
-                            : "Casi... Recuerda que la fe de la niña consistía en confiar que Dios 'armaba' sus letras.";
+                            ? "¡Amén! Dios es el gran traductor de nuestros corazones."
+                            : "Intenta de nuevo. Recuerda que la niña confiaba en lo que Dios haría con sus letras.";
 
                         quizHtml += `
                             <div class="${feedbackClass} p-4 rounded-xl flex items-start gap-3 animate-fade-in">
@@ -440,35 +427,72 @@
                 }
             },
             {
-                title: "Cierre",
-                subtitle: "Bendice alma mía",
+                title: "Reflexión",
+                subtitle: "Reflexión y Acción",
                 renderContent: () => `
                     <div class="space-y-6 animate-fade-in">
-                        <div class="bg-slate-800 p-8 rounded-3xl text-white text-center shadow-xl mb-6">
-                            <h4 class="text-slate-400 text-sm uppercase tracking-widest mb-2 font-bold">Resumen</h4>
-                            <h2 class="text-2xl font-serif italic mb-4">Curando la Amnesia</h2>
-                            <ul class="text-left space-y-3 text-slate-300 mx-auto max-w-sm">
-                                <li class="flex items-start gap-2">
-                                    <i data-lucide="heart" class="w-5 h-5 text-rose-400 mt-1 shrink-0"></i>
-                                    <span><strong>Guardar el corazón:</strong> Protege lo que entra en tu mente.</span>
-                                </li>
-                                <li class="flex items-start gap-2">
-                                    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 mt-1 shrink-0"></i>
-                                    <span><strong>Hacerlo todo para Él:</strong> Mañana, cuando trabajes o estudies, di: <em>"Señor, esto es para ti".</em></span>
-                                </li>
-                            </ul>
-                        </div>
+                        <p class="text-gray-700">
+                            No nos vayamos tras este devocional con amnesia. Recordemos dos cosas fundamentales para accionar esta semana:
+                        </p>
                         
+                        <div class="space-y-4">
+                            <!-- Point 1 -->
+                            <div class="bg-white p-5 rounded-2xl border-l-4 border-blue-500 shadow-sm">
+                                <h4 class="font-bold text-blue-800 mb-1">1. No te olvides de DAR</h4>
+                                <p class="text-sm text-gray-500 mb-2">Hebreos 13:16</p>
+                                <p class="text-gray-700 italic">
+                                    "Y de hacer bien y de la ayuda mutua no os olvidéis; porque de tales sacrificios se agrada Dios".
+                                </p>
+                            </div>
+
+                            <!-- Point 2 -->
+                            <div class="bg-white p-5 rounded-2xl border-l-4 border-purple-500 shadow-sm">
+                                <h4 class="font-bold text-purple-800 mb-1">2. No te olvides de AGRADECER</h4>
+                                <p class="text-sm text-gray-500 mb-2">Salmos 103:2</p>
+                                <p class="text-gray-700 italic">
+                                    "Bendice, alma mía, a Jehová, Y no olvides ninguno de sus beneficios".
+                                </p>
+                            </div>
+                        </div>
+                        <p class="text-center font-semibold text-gray-800">
+                            Recordar lo que Dios ha hecho desata la adoración.
+                        </p>
+                    </div>
+                `
+            },
+            {
+                title: "Oración",
+                subtitle: "Oración Guiada",
+                renderContent: () => `
+                    <div class="space-y-6 animate-fade-in">
+                        <div class="bg-gradient-to-br from-indigo-500 to-purple-600 p-6 rounded-3xl text-white shadow-xl">
+                            <h3 class="font-bold text-lg mb-4 text-center border-b border-white/20 pb-2">Dale tus letras a Dios</h3>
+                            
+                            <div class="space-y-6">
+                                <div>
+                                    <span class="bg-white/20 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">Paso 1: Gratitud</span>
+                                    <p class="mt-2 text-indigo-50 italic">
+                                        "Señor, no quiero olvidar tus beneficios. Gracias por lo que has hecho en mi vida."
+                                    </p>
+                                    <p class="text-xs mt-1 text-white/60">(Toma un momento en silencio)</p>
+                                </div>
+
+                                <div>
+                                    <span class="bg-white/20 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">Paso 2: Intención</span>
+                                    <p class="mt-2 text-indigo-50 italic">
+                                        "Tal vez no tengo palabras perfectas, pero te entrego mi corazón. Arma Tú las palabras que necesito. Transfórmame de adentro hacia afuera."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="bg-amber-50 p-6 rounded-2xl border border-amber-200">
-                            <h4 class="font-bold text-amber-900 mb-3 flex items-center gap-2">
-                                <i data-lucide="pen-tool" class="w-5 h-5"></i> Oración Final
-                            </h4>
-                            <p class="text-amber-800 italic leading-relaxed">
-                                "Señor, hoy te entregamos nuestras letras, nuestro 'A, B, C', confiando en que Tú allá en el cielo armas las oraciones y cumples Tu propósito. Amén."
+                            <p class="text-amber-900 italic text-center leading-relaxed font-serif">
+                                "Padre, gracias porque Tú eres el gran traductor de nuestros corazones. Enséñanos a vivir para agradarte. Amén."
                             </p>
                         </div>
                         
-                        <div class="text-center text-gray-500 text-sm italic mt-4">
+                         <div class="text-center text-gray-500 text-sm italic mt-4">
                             Continúa para la actividad final...
                         </div>
                     </div>

@@ -1,352 +1,389 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronRight, ChevronLeft, Heart, BookOpen, MessageCircle, Star, PenTool, CheckCircle, RefreshCcw, HelpCircle, Award, Share2 } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="es">
 
-const DevocionalApp = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [completed, setCompleted] = useState(false);
-  const [quizAnswer, setQuizAnswer] = useState(null);
-  const [showFeedback, setShowFeedback] = useState(false);
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuando el Cielo Ordena tus Letras</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
 
-  // URL de la marca proporcionada por el usuario
-  const brandLogo = "https://i.imgur.com/dDYOrEm.png";
+        :root {
+            --primary: #2d3436;
+            --text: #636e72;
+            --accent: #6c5ce7;
+            --bg: #f9f9f9;
+            --card-bg: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
 
-  // Componente para mostrar el logo en lugar de los iconos de Lucide
-  const BrandIcon = ({ className = "h-5 w-auto" }) => (
-    <img 
-      src={brandLogo} 
-      alt="Logo" 
-      className={`${className} object-contain`} 
-    />
-  );
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-  const steps = [
-    {
-      title: "Bienvenida",
-      subtitle: "Portada del Devocional",
-      isCover: true,
-      content: (
-        <div className="space-y-6 text-center animate-in fade-in duration-1000">
-          <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl bg-slate-900 aspect-[4/5] md:aspect-video mb-6">
-            <img 
-              src="https://i.imgur.com/yrP3u2O.png" 
-              alt="Portada: Cuando el Cielo Ordena tus Letras" 
-              className="w-full h-full object-cover"
-            />
-            {/* Overlay para legibilidad */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/40" />
-            
-            {/* Logo de marca en la portada */}
-            <div className="absolute top-6 left-6">
-              <img 
-                src={brandLogo} 
-                alt="Logo Marca" 
-                className="h-10 w-auto object-contain brightness-0 invert opacity-90" 
-              />
-            </div>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
 
-            <div className="absolute bottom-8 left-0 right-0 px-8 text-left">
-              <span className="bg-indigo-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-[0.2em] mb-3 inline-block shadow-lg">
-                Plan Familiar Dominical
-              </span>
-              <h1 className="text-4xl md:text-5xl font-black text-white leading-[1.1] tracking-tight drop-shadow-2xl">
-                Cuando el Cielo <br />
-                <span className="text-indigo-400">Ordena tus Letras</span>
-              </h1>
-            </div>
-          </div>
-          
-          <div className="px-4 space-y-4">
-            <p className="text-gray-500 font-medium italic text-lg leading-relaxed">
-              "Un tiempo para reconocer que Dios escucha incluso nuestros pensamientos más sencillos."
-            </p>
-            <div className="flex justify-center gap-1.5 text-amber-400">
-              <Star size={18} fill="currentColor" />
-              <Star size={18} fill="currentColor" />
-              <Star size={18} fill="currentColor" />
-              <Star size={18} fill="currentColor" />
-              <Star size={18} fill="currentColor" />
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Introducción",
-      subtitle: "La amnesia y la anécdota",
-      content: (
-        <div className="space-y-4">
-          {/* Video / GIF Section */}
-          <div className="relative w-full rounded-2xl overflow-hidden shadow-md bg-slate-100 mb-6 border border-gray-100">
-            <video 
-              src="https://i.imgur.com/bW3e1SV.mp4" 
-              autoPlay 
-              loop 
-              muted 
-              playsInline
-              className="w-full h-auto object-cover max-h-[300px]"
-            />
-            <div className="absolute bottom-2 right-2 bg-black/30 backdrop-blur-sm px-2 py-1 rounded text-[10px] text-white/80">
-              Reflexión visual
-            </div>
-          </div>
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            /* Mobile width */
+            background: var(--card-bg);
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
 
-          <p className="text-gray-700 leading-relaxed">
-            Hola a todos. ¿Saben? Estaba pensando en lo frágiles que somos con nuestra memoria. A veces le pedimos milagros a Dios, pero apenas lo tenemos, nos da una especie de <strong>"amnesia espiritual"</strong>.
-          </p>
-          <div className="bg-blue-50 p-4 rounded-xl border-l-4 border-blue-500 italic text-blue-900">
-            "Olvidamos rápido. Pero hoy quiero contarles algo que me pasó y que me niego a olvidar."
-          </div>
-          <p className="text-gray-700">
-            ¿Se acuerdan de la pasada Navidad? Compramos ropa, zapatos y ¡un balón de fútbol! Uno da el regalo y piensa: "Misión cumplida".
-          </p>
-          <div className="bg-amber-50 p-6 rounded-2xl shadow-sm border border-amber-100">
-            <h4 className="font-bold text-amber-800 mb-2 flex items-center gap-2">
-              <BookOpen size={18} /> Proverbios 4:23
-            </h4>
-            <p className="text-lg text-amber-900 font-serif italic">
-              "Sobre toda cosa guardada, guarda tu corazón; porque de él mana la vida."
-            </p>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Punto 1",
-      subtitle: "La intención detrás de la acción",
-      content: (
-        <div className="space-y-4">
-          <p className="text-gray-700">
-            ¿Por qué hacemos lo que hacemos? A veces nos complicamos pensando si "hicimos suficiente". Pero miren lo que dice el apóstol Pablo:
-          </p>
-          <div className="bg-indigo-600 p-6 rounded-2xl text-white shadow-lg">
-            <h4 className="font-bold mb-2 flex items-center gap-2">
-              <BrandIcon className="h-4 brightness-0 invert" /> 1 Corintios 10:31
-            </h4>
-            <p className="text-xl font-medium">
-              "Si, pues, coméis o bebéis, o hacéis otra cosa, hacedlo todo para la gloria de Dios."
-            </p>
-          </div>
-          <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-            <h5 className="font-bold text-gray-800 mb-2">Pregunta para la familia:</h5>
-            <p className="text-gray-600 italic">¿En qué áreas de tu rutina diaria te cuesta más recordar que lo haces para la gloria de Dios?</p>
-          </div>
-          <p className="text-gray-700 font-semibold text-center mt-4">
-            ¿Tu corazón estaba alineado con el Cielo al darlo?
-          </p>
-        </div>
-      )
-    },
-    {
-      title: "Ilustración Central",
-      subtitle: "La niña y el alfabeto",
-      content: (
-        <div className="space-y-4">
-          <p className="text-gray-700 italic">
-            "Una niña le dijo a sus padres que iría a orar. Al escuchar tras la puerta, la oyeron repetir el abecedario. Al preguntarle, ella respondió:"
-          </p>
-          <div className="bg-emerald-50 p-6 rounded-2xl border-2 border-dashed border-emerald-200 text-emerald-900 font-medium text-lg text-center">
-            "¡Ay, papás! Lo que pasa es que yo tengo tanta fe, que sé que yo acá digo las letras y allá en el cielo Dios arma las palabras."
-          </div>
-          <p className="text-gray-600 text-sm text-center">
-            Esta representación nos recuerda que Dios toma nuestro caos y lo vuelve un mensaje claro de amor.
-          </p>
-        </div>
-      )
-    },
-    {
-      title: "Punto 2",
-      subtitle: "Dios transforma desde adentro",
-      content: (
-        <div className="space-y-4">
-          <p className="text-gray-700">
-            Dios no busca el discurso perfecto, busca transformación interna.
-          </p>
-          <div className="bg-white p-6 rounded-2xl border-2 border-purple-100 shadow-sm">
-            <h4 className="font-bold text-purple-800 mb-2 flex items-center gap-2">
-              <RefreshCcw size={18} /> Romanos 12:2
-            </h4>
-            <p className="text-gray-800 leading-relaxed">
-              "No se amolden al mundo actual, sino sean <strong>transformados mediante la renovación de su mente</strong>."
-            </p>
-          </div>
-          <div className="flex items-center gap-4 bg-purple-50 p-4 rounded-xl">
-            <div className="text-3xl">🦋</div>
-            <p className="text-sm text-purple-900 italic">
-              La transformación es de adentro hacia afuera. La niña dio sus letras y dejó que Dios hiciera la obra.
-            </p>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Test de Fe",
-      subtitle: "¿Qué aprendimos hoy?",
-      content: (
-        <div className="space-y-6">
-          <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-            <h4 className="font-bold text-slate-800 text-lg mb-4 flex items-center gap-2">
-              <HelpCircle className="text-indigo-500" size={20} />
-              ¿Qué buscaba enseñarnos la niña al repetir el abecedario?
-            </h4>
-            
-            <div className="space-y-3">
-              {[
-                { id: 'a', text: "Que no sabía orar correctamente.", correct: false },
-                { id: 'b', text: "Que Dios conoce nuestra intención y Él ordena nuestra oración.", correct: true },
-                { id: 'c', text: "Que Dios prefiere el orden alfabético.", correct: false }
-              ].map((opt) => (
-                <button
-                  key={opt.id}
-                  onClick={() => { setQuizAnswer(opt.id); setShowFeedback(true); }}
-                  className={`w-full p-4 rounded-xl text-left font-medium transition-all border-2 flex items-center justify-between ${
-                    quizAnswer === opt.id 
-                      ? (opt.correct ? 'border-emerald-500 bg-emerald-50 text-emerald-900' : 'border-rose-500 bg-rose-50 text-rose-900')
-                      : 'border-white bg-white hover:border-indigo-100 shadow-sm'
-                  }`}
-                >
-                  <span>{opt.text}</span>
-                  {quizAnswer === opt.id && (opt.correct ? <CheckCircle size={18} /> : <span>✕</span>)}
-                </button>
-              ))}
-            </div>
-          </div>
+        .header {
+            padding: 2rem;
+            background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
+            color: white;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
 
-          {showFeedback && (
-            <div className={`p-4 rounded-xl animate-in zoom-in-95 duration-300 flex items-start gap-3 ${
-              quizAnswer === 'b' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
-            }`}>
-              <div className="mt-1">{quizAnswer === 'b' ? <Award size={20} /> : <HelpCircle size={20} />}</div>
-              <p className="text-sm">
-                {quizAnswer === 'b' 
-                  ? "¡Correcto! Dios no busca elocuencia, sino un corazón que confía en Su soberanía." 
-                  : "Casi... Recuerda que la fe de la niña consistía en confiar que Dios 'armaba' sus letras."}
-              </p>
-            </div>
-          )}
-        </div>
-      )
-    },
-    {
-      title: "Cierre",
-      subtitle: "Bendice alma mía",
-      content: (
-        <div className="space-y-6">
-          <div className="bg-slate-800 p-8 rounded-3xl text-white text-center shadow-xl">
-            <h4 className="text-slate-400 text-sm uppercase tracking-widest mb-2 font-bold">Salmos 103:2</h4>
-            <p className="text-2xl font-serif italic mb-4">
-              "Bendice, alma mía, a Jehová, Y no olvides ninguno de sus beneficios."
-            </p>
-          </div>
-          
-          <div className="bg-amber-50 p-6 rounded-2xl border border-amber-200">
-            <h4 className="font-bold text-amber-900 mb-3 flex items-center gap-2">
-              <PenTool size={18} /> Oración Final
-            </h4>
-            <p className="text-amber-800 italic leading-relaxed">
-              "Señor, hoy te entregamos nuestras letras, nuestro 'A, B, C', confiando en que Tú allá en el cielo armas las oraciones y cumples Tu propósito. Amén."
-            </p>
-          </div>
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(white, transparent 70%);
+            opacity: 0.1;
+            pointer-events: none;
+        }
 
-          <button 
-            onClick={() => setCompleted(true)}
-            className="w-full py-4 bg-emerald-600 text-white font-bold rounded-2xl hover:bg-emerald-700 transition-colors shadow-lg flex items-center justify-center gap-2"
-          >
-            <CheckCircle size={20} /> ¡He terminado mi devocional!
-          </button>
-        </div>
-      )
-    }
-  ];
+        .header h1 {
+            font-family: 'Lora', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
 
-  const progress = ((currentStep + 1) / steps.length) * 100;
+        .header .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
 
-  if (completed) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 font-sans text-slate-800">
-        <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-10 text-center space-y-6 border border-gray-100">
-          <div className="w-24 h-24 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse border-4 border-white shadow-xl">
-            <BrandIcon className="h-12 w-auto" />
-          </div>
-          <h1 className="text-3xl font-extrabold text-gray-900">¡Gloria a Dios!</h1>
-          <p className="text-gray-600 text-lg">Has completado el devocional de hoy. Que estas verdades guarden tu corazón.</p>
-          <button 
-            onClick={() => {setCurrentStep(0); setCompleted(false); setQuizAnswer(null); setShowFeedback(false);}}
-            className="px-8 py-3 bg-gray-900 text-white rounded-full font-bold hover:bg-gray-800 transition-all shadow-lg"
-          >
-            Volver a empezar
-          </button>
-        </div>
-      </div>
-    );
-  }
+        .content {
+            padding: 0 1.5rem 2rem;
+            flex: 1;
+        }
 
-  return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-800">
-      {/* Header */}
-      {!steps[currentStep].isCover && (
-        <header className="bg-white border-b border-gray-100 px-6 py-4 sticky top-0 z-10 shadow-sm">
-          <div className="max-w-2xl mx-auto flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img src={brandLogo} alt="Logo" className="h-8 w-auto object-contain" />
-              <div className="h-6 w-px bg-gray-200 mx-1 hidden sm:block"></div>
-              <div>
-                <h1 className="text-[10px] font-black text-indigo-500 uppercase tracking-widest">Devocional Familiar</h1>
-                <p className="text-sm font-bold text-slate-800 truncate max-w-[150px] sm:max-w-none">{steps[currentStep].title}</p>
-              </div>
-            </div>
-            {/* Círculo con la MARCA */}
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md border border-gray-50 overflow-hidden p-1.5 transition-transform hover:scale-110">
-              <BrandIcon className="h-full w-auto" />
-            </div>
-          </div>
-          <div className="max-w-2xl mx-auto mt-4 h-1 w-full bg-gray-100 rounded-full overflow-hidden">
-            <div className="h-full bg-indigo-500 transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
-          </div>
+        .section-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-heading {
+            font-family: 'Lora', serif;
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .verse-card {
+            background: linear-gradient(to right, #f8f9fa, #ffffff);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 12px 12px 0;
+            font-family: 'Lora', serif;
+            font-style: italic;
+            color: #2d3436;
+        }
+
+        .verse-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 0.5rem;
+        }
+
+        .verse-ref {
+            font-size: 0.9rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-align: right;
+            font-family: 'Outfit', sans-serif;
+            font-style: normal;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, rgba(108, 92, 231, 0.1) 0%, rgba(108, 92, 231, 0.1) 100%);
+            padding: 0 2px;
+            border-radius: 4px;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--accent);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-size: 1.5rem;
+            z-index: 100;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+        }
+
+        /* Slide mechanics for "YouVersion" feel */
+        .step {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .btn-next {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.2);
+        }
+
+        .btn-back {
+            background: transparent;
+            color: var(--text);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header Image Area -->
+        <header class="header">
+            <div class="subtitle">Devocional Dominical</div>
+            <h1>Cuando el Cielo Ordena tus Letras</h1>
         </header>
-      )}
 
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto px-6 py-8">
-        <div className={`max-w-2xl mx-auto bg-white rounded-3xl shadow-sm border border-gray-100 p-6 md:p-10 min-h-[500px] flex flex-col ${steps[currentStep].isCover ? 'justify-center' : ''}`}>
-          {!steps[currentStep].isCover && (
-            <div className="mb-8">
-              <span className="text-indigo-500 font-bold text-sm uppercase tracking-widest">Sección {currentStep}</span>
-              <h2 className="text-3xl font-black text-gray-900 mt-1">{steps[currentStep].subtitle}</h2>
+        <main class="content">
+
+            <!-- Step 1: Intro -->
+            <div class="step active" id="step-1">
+                <div class="section-card">
+                    <div class="section-title">Introducción</div>
+                    <h2 class="section-heading">La amnesia y la anécdota</h2>
+                    <p>Hola a todos. ¿Saben? Estaba pensando en lo frágiles que somos con nuestra memoria. A veces le
+                        pedimos milagros a Dios, rogamos por provisión, pero apenas lo tenemos, nos da una especie de
+                        <strong>"amnesia espiritual"</strong>. Olvidamos rápido.</p>
+                    <p>Pero hoy quiero contarles algo que me pasó y que me niego a olvidar.</p>
+                </div>
+
+                <div class="section-card">
+                    <p>¿Se acuerdan de la pasada Navidad? En el trabajo hicimos esa actividad de apadrinar a un niño, el
+                        hijo de un compañero que la está pasando difícil. Nos movimos, compramos ropa, unos zapatos
+                        nuevos, y claro, ¡el balón de fútbol! Uno da el regalo y piensa: <em>"Misión cumplida"</em>.</p>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-back" disabled></button>
+                    <button class="btn btn-next" onclick="nextStep(2)">Siguiente</button>
+                </div>
             </div>
-          )}
-          
-          <div className="flex-1 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            {steps[currentStep].content}
-          </div>
-        </div>
-      </main>
 
-      {/* Footer Navigation */}
-      <footer className="bg-white border-t border-gray-100 p-6">
-        <div className="max-w-2xl mx-auto flex gap-4">
-          {currentStep > 0 && (
-            <button 
-              onClick={() => { setCurrentStep(prev => prev - 1); setQuizAnswer(null); setShowFeedback(false); }}
-              className="flex-1 py-4 bg-gray-100 text-gray-600 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200"
-            >
-              <ChevronLeft size={20} /> Anterior
-            </button>
-          )}
-          
-          {currentStep < steps.length - 1 && (
-            <button 
-              onClick={() => { setCurrentStep(prev => prev + 1); setQuizAnswer(null); setShowFeedback(false); window.scrollTo(0, 0); }}
-              className="flex-[2] py-4 bg-indigo-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-indigo-700 shadow-lg transition-transform active:scale-95"
-            >
-              {currentStep === 0 ? 'Empezar Devocional' : 'Siguiente'} <ChevronRight size={20} />
-            </button>
-          )}
-        </div>
-      </footer>
+            <!-- Step 2: La Carta -->
+            <div class="step" id="step-2">
+                <div class="section-card">
+                    <h2 class="section-heading">La Respuesta Inesperada</h2>
+                    <p>Pero la semana pasada... llegó una carta. El niño escribió para agradecer. Y uno espera el típico
+                        "Gracias por el balón".</p>
+                    <p>Pero la carta traía una tarjeta con un pasaje que me desarmó. El niño, en su sencillez, no nos
+                        habló de la marca de los zapatos, sino de esto:</p>
+                </div>
+
+                <div class="verse-card">
+                    <div class="verse-text">"Sobre toda cosa guardada, guarda tu corazón; porque de él mana la vida."
+                    </div>
+                    <div class="verse-ref">Proverbios 4:23</div>
+                </div>
+
+                <div class="section-card">
+                    <p>¡Tremendo! Nosotros le dimos cosas para los pies y para las manos, pero él nos devolvió un
+                        <strong>principio para el alma</strong>. Él entendió que lo valioso no es la caja, sino la
+                        intención.</p>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-back" onclick="nextStep(1)">Atrás</button>
+                    <button class="btn btn-next" onclick="nextStep(3)">Siguiente</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Punto 1 -->
+            <div class="step" id="step-3">
+                <div class="section-card">
+                    <div class="section-title">Punto 1</div>
+                    <h2 class="section-heading">La intención detrás de la acción</h2>
+                    <p>Y esto me hizo pensar: <span class="highlight">¿Por qué hacemos lo que hacemos?</span></p>
+                    <p>A veces nos complicamos pensando si "hicimos suficiente" o si "lo hicimos perfecto". Pero miren
+                        lo que dice el apóstol Pablo.</p>
+                    <p>Quiero que leamos esto juntos, porque aplica para cuando damos un regalo o cuando nos tomamos un
+                        café:</p>
+                </div>
+
+                <div class="verse-card">
+                    <div class="verse-text">"Si, pues, coméis o bebéis, o hacéis otra cosa, hacedlo todo para la gloria
+                        de Dios."</div>
+                    <div class="verse-ref">1 Corintios 10:31</div>
+                </div>
+
+                <div class="section-card">
+                    <p>Cuando hacemos las cosas para Él, la presión desaparece. Pasamos de la
+                        <strong>obligación</strong> a la <strong>adoración</strong>.</p>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-back" onclick="nextStep(2)">Atrás</button>
+                    <button class="btn btn-next" onclick="nextStep(4)">Siguiente</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Punto 2 -->
+            <div class="step" id="step-4">
+                <div class="section-card">
+                    <div class="section-title">Punto 2</div>
+                    <h2 class="section-heading">Cuando Dios firma nuestras cartas</h2>
+                    <p>El título de hoy es <em>"Cuando el Cielo ordena tus letras"</em>. Ese niño no solo escribió una
+                        carta de agradecimiento; permitió que Dios ordenara sus palabras.</p>
+                    <p>¿Qué estamos escribiendo nosotros con nuestras vidas? ¿Son cartas de queja? ¿Son mensajes de
+                        ansiedad?</p>
+                </div>
+
+                <div class="verse-card">
+                    <div class="verse-text">"Rebosa mi corazón palabra buena; Dirijo al rey mi canto; Mi lengua es pluma
+                        de escribiente muy ligero."</div>
+                    <div class="verse-ref">Salmos 45:1</div>
+                </div>
+
+                <div class="section-card">
+                    <p>Nuestra lengua y nuestras acciones son una <strong>pluma</strong> que Dios quiere usar. Pero
+                        primero, el corazón debe estar lleno de "palabra buena".</p>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-back" onclick="nextStep(3)">Atrás</button>
+                    <button class="btn btn-next" onclick="nextStep(5)">Siguiente</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Conclusión -->
+            <div class="step" id="step-5">
+                <div class="section-card">
+                    <div class="section-title">Conclusión</div>
+                    <h2 class="section-heading">Curando la Amnesia</h2>
+                    <p>Hoy quiero invitarlos a dos cosas sencillas para esta semana:</p>
+                    <p>❤️ <strong>Guardar el corazón:</strong> Protege lo que entra en tu mente.</p>
+                    <p>🙌 <strong>Hacerlo todo para Él:</strong> Mañana, cuando trabajes o estudies, di: <em>"Señor,
+                            esto es para ti".</em></p>
+                </div>
+
+                <div class="section-card" style="background-color: var(--accent); color: white;">
+                    <p style="text-align: center; font-weight: 600; font-size: 1.1rem; margin: 0;">Oremos juntos</p>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-back" onclick="nextStep(4)">Atrás</button>
+                    <button class="btn btn-next" onclick="nextStep(1)">Reiniciar</button>
+                </div>
+            </div>
+
+        </main>
     </div>
-  );
-};
 
-export default function App() {
-  return <DevocionalApp />;
-}
+    <script>
+        function nextStep(stepNumber) {
+            // Hide all steps
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            // Show target step
+            document.getElementById(`step-${stepNumber}`).classList.add('active');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+
+</html>
